@@ -1,0 +1,49 @@
+
+import multiprocessing
+
+
+class ApiService:
+    '''
+
+
+    '''
+   
+    def __init__(self):
+	self.app_info = None
+	self.app_exit = False
+	self.app_started = False
+	self.app_logger = None
+
+    def worker_loop(self):
+
+	#self.app_logger = AppLoggger(app_name=app_info.get_name())
+	for i in range(200000):
+		print "worker loop"
+
+    def start(self):
+
+	#if self.app_started == True:
+		#raise GeneralException('app is already started, this start function can not be called')
+
+        #Save app info here
+
+	#Create & save logger here
+	#app_logger = AppLoggger(app_name=app_info.get_name())
+	
+	#app_logger.info("Application %s starting" % app_info.get_name())
+	#app_logger.info("Version: %s" % app_info.get_version())
+
+	#p = multiprocessing.Process(target=self.worker1)
+        #p.start()
+	
+ 
+
+   
+
+
+
+
+
+
+	
+	
