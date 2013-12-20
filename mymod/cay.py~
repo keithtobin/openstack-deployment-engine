@@ -1,0 +1,5 @@
+
+def myprint():
+	print "it works"
+
+

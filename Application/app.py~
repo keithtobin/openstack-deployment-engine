@@ -5,6 +5,8 @@ deploy-os version
 deploy-os description
 deploy-os name
 deploy-os info
+deploy-os start
+deploy-os stop
 deploy-os vm create <name>
 deploy-os vm addtogroup <name> <groupname>
 start-os -h | --help | --version
@@ -16,13 +18,19 @@ from exitcode import ExitCode
 from appinfo import AppInformation
 from appexceptions import GeneralException
 from applogger import AppLoggger
+from baremetaldeploymentmanager import BareMetalDeploymentManager
+import signal
+
+import time
+
 
 
 class App:
    
     def __init__(self):
-        pass
-
+	self.bmdm = None
+	self.started = False
+        
 
     def _process_commands(self, args=None,app_logger=None):
 
@@ -38,14 +46,28 @@ class App:
 		return exit_code
 
         if args['info'] == True:
-		app_info = AppInformation()
+		app_info = AppInformation(app_logger)
 		print app_info.get_all_info()
 		return exit_code
 	
+	if args['start'] == True:
+		#app.run(debug = True)
+		self.bmdm =  BareMetalDeploymentManager()
+		self.bmdm.start()
+		return exit_code
+
+
 	return exit_code
 
     def start(self):  
-	
+
+	from mymod import cay	
+	#import mymod.cay
+	cay.myprint()
+ 
+
+	return ExitCode(0)
+
 	#Lets get app info for later use
 	app_info = AppInformation()
         
@@ -54,7 +76,9 @@ class App:
 	
 	app_logger.info("Application %s starting" % app_info.get_name())
 	app_logger.info("Version: %s" % app_info.get_version())
-
+	
+	#Install signal handler
+	#signal.signal(signal.SIGINT, self.handle_signal)
   
         #lets parse some args
         args = docopt(__doc__, version='0.1.1rc')
@@ -67,3 +91,8 @@ class App:
 	app_logger.info("ExitCode.description: %s" % exitcode.get_description())
 
         return exitcode
+
+    def handle_signal(self,signum, frame):
+	self.bmdm.stop()
+	return
+	
